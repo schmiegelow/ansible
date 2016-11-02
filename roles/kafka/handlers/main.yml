@@ -1,0 +1,16 @@
+---
+# handlers file for roles/supervisor
+
+- name: restart supervisor
+  command: service supervisor restart
+
+# service funktioniert nicht zuverlässig
+#  service: name=supervisor state=restarted
+
+
+- name: reload supervisor
+  shell: supervisorctl reload
+
+# reload the config
+- name: update supervisor
+  shell: supervisorctl update

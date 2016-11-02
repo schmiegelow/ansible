@@ -1,8 +1,13 @@
+- name: apt-get update
+  raw: apt-get update -qq
+
+- name: Install python 2.7
+  raw: apt-get install -qq python2.7
+
 - name: Update repositories cache and install "jdk8" package
   apt:
     name: openjdk-8-jdk
     update_cache: yes
-
 
 - name: Update repositories cache and install "supervisor" package
   apt:
