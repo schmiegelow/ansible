@@ -1,0 +1,4 @@
+kafka_archive_dest: /opt/kafka-0.10.0.0.tgz
+kafka_dest: /opt/kafka/
+kafka_log_dir: /var/kafka/kafka-logs
+kafka_logging_dir: /var/log/kafka

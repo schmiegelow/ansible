@@ -1,0 +1,9 @@
+- name: Update repositories cache and install "jdk8" package
+  apt:
+    name: openjdk-8-jdk
+    update_cache: yes
+
+
+- name: Update repositories cache and install "supervisor" package
+  apt:
+    name: supervisor

@@ -1,0 +1,9 @@
+[program:kafka]
+command={{ kafka_dest }}bin/kafka-server-start.sh {{ kafka_dest }}config/server.properties
+user=kafka
+directory={{ kafka_dest }}
+autostart=true
+autorestart=true
+log_stdout=true
+log_stderr=true
+environment = LANG="en_US.UTF-8",KAFKA_HEAP_OPTS="-Xmx1G -Xms1G"

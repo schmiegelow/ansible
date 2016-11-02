@@ -1,0 +1,53 @@
+---
+# tasks file for roles/cpa-kafka
+- name: install required packages
+  apt: name={{ item }} state=present force=yes
+  with_items:
+      - openjdk-8-jdk
+      - zookeeper
+
+- name: Add kafka user
+  user: name=kafka group=users
+
+- name: copy kafka distribution
+  copy: src=kafka_2.11-0.10.0.1.tgz dest={{ kafka_archive_dest }} owner=kafka
+  register: file_copied
+  tags: deploy
+
+- name: create kafka directory
+  file: path={{ kafka_dest }} state=directory owner=kafka recurse=true
+  tags: deploy
+
+# We do not use unpack here, because it does not support strip-components yet.
+# See: https://github.com/ansible/ansible-modules-core/pull/2491
+- name: unpack kafka distribution
+  command: tar -zxf {{ kafka_archive_dest }} -C {{ kafka_dest }} --strip-components 1 --overwrite --overwrite-dir
+  when: file_copied.changed == true
+  tags: deploy
+
+- name: set correct permissions for kafka directory
+  file: path={{ kafka_dest }} state=directory owner=kafka
+  tags: deploy
+
+- name: set correct permissions for kafka log directory
+  file: path={{ kafka_log_dir }} state=directory owner=kafka
+  tags: deploy
+
+- name: copy kafka config
+  template: src=server.properties.j2 dest={{ kafka_dest }}/config/server.properties owner=kafka
+  notify: restart supervisor
+  tags: deploy
+
+- name: ensure kafka logging directory exists
+  file: path={{ kafka_logging_dir }} state=directory owner=kafka recurse=true
+  tags: deploy
+
+- name: copy kafka logging config
+  template: src=log4j.properties.j2 dest={{ kafka_dest }}/config/log4j.properties owner=kafka
+  notify: restart supervisor
+  tags: deploy
+
+- name: copy supervisor config
+  template: src=supervisor.conf.j2 dest=/etc/supervisor/conf.d/kafka.conf owner=root
+  notify: restart supervisor
+  tags: deploy

@@ -1,0 +1,11 @@
+---
+# Kafka Playbook
+
+- hosts: kafka
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+
+  roles:
+    - base
+    - kafka
