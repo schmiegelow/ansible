@@ -17,7 +17,7 @@
 ############################# Server Basics #############################
 
 {% for kafka_host in groups['kafka'] %}
-	{% if ansible_hostname == kafka_host %}
+	{% if inventory_hostname == kafka_host %}
 broker.id = {{ loop.index0 }}
 	{% endif%}
 {% endfor %}
