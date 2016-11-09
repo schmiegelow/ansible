@@ -1,0 +1,13 @@
+- name: Update repositories cache and install "zookeeper" package
+  apt:
+    name: zookeeper
+
+- name: copy zookeeper config
+  template: src=zoo.cfg.j2 dest=/etc/zookeeper/conf/zoo.cfg owner=root
+  tags: deploy
+
+- name: copy zookeeper id
+  template: src=myid.j2 dest=/etc/zookeeper/conf/myid owner=root
+  notify:
+    - restart zookeeper
+  tags: deploy
