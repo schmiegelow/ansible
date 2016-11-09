@@ -1,5 +1,6 @@
+#jinja2: trim_blocks: "true", lstrip_blocks: "false"
 {% for zookeeper_host in groups['zookeeper'] %}
-	{% if inventory_hostname == zookeeper_host %}
-{{ loop.index0 }}
-	{% endif%}
+{% if inventory_hostname == zookeeper_host %}
+{{ loop.index0 +1 }}
+{% endif%}
 {% endfor %}
